@@ -180,6 +180,7 @@ tuple <int **, int **> floydWarshall(int ** adjMatrix, int numNames)
   }
 
   tuple <int **, int **> output;
+  output = make_tuple(distMatrix, piMatrix);
   return output;
 }
 
@@ -190,32 +191,69 @@ bool isPath(int startNum, int endNum)
 
 tuple <vector<int>, int> shortestPath(int ** shortestDistMatrix, int ** shortestPiMatrix, int startNum, int endNum)
 {
-  cout << "PROGRAM BEGIN!!!";
+  cout << "SHORTEST PATH PROGRAM BEGIN!!!" << endl;;
   int pathLength = shortestDistMatrix[startNum][endNum];
-  cout << pathLength;
   vector<int> path;
   int prev, curr;
   prev = startNum;
   curr = shortestPiMatrix[startNum][endNum];
-  cout << prev << " " << curr << endl;
-
-  do {
-    cout << curr << " ";
-    path.push_back(curr);
+  cout << curr << endl;
+  path.push_back(startNum);
+  while (prev != curr)
+  {
+    path.push_back(prev);
+    cout << curr << endl;
     prev = curr;
     curr = shortestPiMatrix[prev][endNum];
-  } while (prev != curr);
-  cout << endl;
+  }
+  path.push_back(endNum);
   tuple <vector<int>, int> shortestPathTuple;
   shortestPathTuple = make_tuple(path, pathLength);
 
   return shortestPathTuple;
 }
 
-void printPath(vector<int> path, vector<string> namesVector)
+void printShortestPath(vector<int> path, vector<string> namesVector, int pathLength)
 {
-  for (int i = 0; i < path.size(); i++)
+  cout << "Shortest path between " << namesVector[path[0]] << " to ";
+  cout << namesVector[path[path.size()-1]] << " takes " << pathLength << " steps takes the following route:" << endl;
+  cout << namesVector[path[0]];
+  for (int i = 1; i < path.size(); i++)
   {
-    cout << namesVector[path[i]] << endl;
+    cout << "->" << namesVector[path[i]];
   }
+  cout << endl;
+}
+
+vector<int> longestPath(int ** shortestDistMatrix, int yourNum, int numNames)
+{
+  vector<int> longestNum;
+  int furthestNum = yourNum;
+  int max = 0;
+  for (int i = 0; i < numNames; i++)
+  {
+    if (shortestDistMatrix[yourNum][i] > max && shortestDistMatrix[yourNum][i] < INF)
+    {
+      max = shortestDistMatrix[yourNum][i];
+      furthestNum = i;
+    }
+  }
+  for (int i = 0; i < numNames; i++)
+  {
+    if (shortestDistMatrix[yourNum][i] == max)
+      longestNum.push_back(i);
+  }
+  return longestNum;
+}
+
+void printLongestPath(vector<int> furthestNum, vector<string> namesVector)
+{
+  cout << namesVector[furthestNum[0]];
+  for (int i = 1; i < furthestNum.size(); i++)
+  {
+    cout << " and "<< namesVector[furthestNum[i]];
+
+  }
+  cout << " is the furthest person from you!" << endl;
+
 }

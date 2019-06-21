@@ -43,7 +43,6 @@ int main()
 
   // Can choose multiple programs.
   cout << "SELECT PROGRAM TO BEGIN:" << '\n';
-  cout << "1. ";
 
   // Finds the shortest path from person A to person B
   tuple <vector<int>, int> shortestPathOutput;
@@ -56,14 +55,20 @@ int main()
   cin >> endName;
   startNum = namesMap[startName];
   endNum = namesMap[endName];
-
-
   shortestPathOutput = shortestPath(shortestDistMatrix, shortestPiMatrix, startNum, endNum);
-/*
   pathNumbers = get<0>(shortestPathOutput);
   numPeopleBtwn = get<1>(shortestPathOutput);
-  printPath(pathNumbers, namesVector);
-*/
+  printShortestPath(pathNumbers, namesVector, numPeopleBtwn);
+
+  // Furthest person
+  int yourNum;
+  vector<int> furthestNum;
+  string  yourName;
+  cout << "Please input your name to see who is furthest: ";
+  cin >> yourName;
+  yourNum = namesMap[yourName];
+  furthestNum = longestPath(shortestDistMatrix, yourNum, numNames);
+  printLongestPath(furthestNum, namesVector);
 
   return 0;
 }
